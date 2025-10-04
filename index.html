@@ -21,13 +21,14 @@
         .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
         .overlay {
             position: fixed; z-index: 2; top: 0; left: 0;
-            width: 100vw; height: 100vh; background: rgba(20,20,20,0.6);
+            width: 100vw; height: 100vh; background: rgba(0,0,0,0.98);
             display: flex; align-items: center; justify-content: center; transition: opacity 0.5s;
         }
         .overlay-text {
             font-size: 2.4em; font-weight: bold;
-            color: #fff; letter-spacing: 0.06em;
-            text-shadow: 0 2px 12px #000, 0 0 32px #00ccff60;
+            color: #fff;
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 16px #fff, 0 0 64px #fff, 0 0 12px #fff;
             cursor: pointer; user-select: none;
         }
         .container {
@@ -78,8 +79,34 @@
             .socials-label { font-size: 1.09em; }
         }
         audio { margin-top: 8px; width: 80%; }
+        .bottom-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .view-counter {
+            color: #fff;
+            font-size: 1em;
+            font-weight: 700;
+            background: rgba(0,0,0,0.38);
+            padding: 6px 15px;
+            border-radius: 7px;
+            box-shadow: 0 1px 8px #0003;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .people-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
         .vol-control {
-            margin-top: 18px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -132,7 +159,7 @@
             opacity: 0.8;
             z-index: 9999;
             box-shadow: 0 0 6px #fff, 0 0 16px #fff3;
-            transition: opacity 0.15s;
+            transition: opacity 0.13s;
             will-change: left, top, opacity;
         }
     </style>
@@ -150,14 +177,26 @@
             <a class="social-link" href="https://www.roblox.com/users/7574203353/profile" target="_blank">Roblox</a>
             <a class="social-link" href="https://www.tiktok.com/@culaf" target="_blank">TikTok</a>
         </div>
+        <div class="bottom-row">
+            <div class="view-counter" id="viewcounter">
+                <span class="people-icon">
+                    <svg viewBox="0 0 24 24" fill="white" width="20" height="20">
+                        <path d="M16.5,11.5c1.66,0,3-1.34,3-3s-1.34-3-3-3s-3,1.34-3,3S14.84,11.5,16.5,11.5z M7.5,11.5c1.66,0,3-1.34,3-3
+                            s-1.34-3-3-3s-3,1.34-3,3S5.84,11.5,7.5,11.5z M7.5,13c-2.33,0-7,1.17-7,3.5V19h14v-2.5C14.5,14.17,9.83,13,7.5,13z
+                            M16.5,13c-0.29,0-0.62,0.02-1,0.05c1.16,0.84,1.98,1.97,2,3.45V19h7v-2.5C24.5,14.17,19.83,13,17.5,13z"/>
+                    </svg>
+                </span>
+                <span id="viewcountnum">--</span>
+            </div>
+            <div class="vol-control">
+                <label class="vol-label" for="volslider">Volume</label>
+                <input type="range" id="volslider" min="0" max="0.3" step="0.01" value="0.3">
+            </div>
+        </div>
         <audio id="bgmusic" loop>
             <source src="https://files.catbox.moe/o8exyp.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <div class="vol-control">
-            <label class="vol-label" for="volslider">Volume</label>
-            <input type="range" id="volslider" min="0" max="0.3" step="0.01" value="0.3">
-        </div>
     </div>
     <script>
         var overlay = document.getElementById('overlay');
@@ -179,7 +218,7 @@
                 overlay.style.display = "none";
                 bg.classList.remove('blurred');
                 main.classList.add('visible');
-                particlesActive = true; // Start particles only after entering
+                particlesActive = true;
             }, 450);
             audio.volume = 0.3;
             audio.play();
@@ -187,10 +226,9 @@
         slider.value = 0.3;
         slider.addEventListener('input', function() { audio.volume = slider.value; });
 
-        // Fast, small white particles following cursor only after overlay unlock, and only when moving
+        // Particle effect
         document.addEventListener('mousemove', function(e) {
             if (!particlesActive) return;
-            // Only produce particles if mouse moved
             if (lastX !== null && lastY !== null && e.clientX === lastX && e.clientY === lastY) return;
             lastX = e.clientX;
             lastY = e.clientY;
@@ -198,14 +236,24 @@
                 let p = document.createElement('div');
                 p.className = 'particle';
                 let angle = Math.random() * 2 * Math.PI;
-                let r = Math.random() * 6;
+                let r = Math.random() * 5;
                 p.style.left = (e.clientX + Math.cos(angle)*r) + 'px';
                 p.style.top = (e.clientY + Math.sin(angle)*r) + 'px';
                 document.body.appendChild(p);
-                setTimeout(() => p.style.opacity = '0', 120 + Math.random()*50);
-                setTimeout(() => p.remove(), 220);
+                setTimeout(() => p.style.opacity = '0', 90 + Math.random()*35);
+                setTimeout(() => p.remove(), 180);
             }
         });
+
+        // Simple local view counter (per-device)
+        (function(){
+            var el = document.getElementById("viewcountnum");
+            var key = "site_viewcount_v1";
+            var count = parseInt(localStorage.getItem(key)||"0");
+            count++;
+            localStorage.setItem(key, count);
+            el.textContent = count;
+        })();
     </script>
 </body>
 </html>
