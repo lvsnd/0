@@ -11,12 +11,11 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
             color: #fff;
-            cursor: url('https://cdn.discordapp.com/attachments/1233881524550635650/1408727094510358621/unnamed.png'), auto;
         }
         .moving-bg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background: url('https://cdn.discordapp.com/attachments/1233881531404124202/1422212927682908252/7ef50d5cba53a3705a6a0085b9fc6572.gif') repeat;
+            background: url('https://i.pinimg.com/originals/20/eb/7c/20eb7c6e74c5318a68a791f6eb58d5a8.gif') repeat;
             background-size: cover; z-index: -2; transition: filter 0.5s;
         }
         .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
@@ -123,6 +122,19 @@
         #volslider:focus { outline: none; }
         #volslider::-ms-fill-lower { background: #ededed; }
         #volslider::-ms-fill-upper { background: #cccccc; }
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            z-index: 9999;
+            box-shadow: 0 0 6px #fff, 0 0 16px #fff3;
+            transition: opacity 0.15s;
+            will-change: left, top, opacity;
+        }
     </style>
 </head>
 <body>
@@ -157,6 +169,9 @@
         bg.classList.add('blurred');
         overlay.style.opacity = "1";
         overlay.style.pointerEvents = "all";
+        var particlesActive = false;
+        var lastX = null, lastY = null;
+
         overlay.onclick = function() {
             overlay.style.opacity = "0";
             overlay.style.pointerEvents = "none";
@@ -164,12 +179,33 @@
                 overlay.style.display = "none";
                 bg.classList.remove('blurred');
                 main.classList.add('visible');
+                particlesActive = true; // Start particles only after entering
             }, 450);
             audio.volume = 0.3;
             audio.play();
         };
         slider.value = 0.3;
         slider.addEventListener('input', function() { audio.volume = slider.value; });
+
+        // Fast, small white particles following cursor only after overlay unlock, and only when moving
+        document.addEventListener('mousemove', function(e) {
+            if (!particlesActive) return;
+            // Only produce particles if mouse moved
+            if (lastX !== null && lastY !== null && e.clientX === lastX && e.clientY === lastY) return;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            for (let i = 0; i < 3; i++) {
+                let p = document.createElement('div');
+                p.className = 'particle';
+                let angle = Math.random() * 2 * Math.PI;
+                let r = Math.random() * 6;
+                p.style.left = (e.clientX + Math.cos(angle)*r) + 'px';
+                p.style.top = (e.clientY + Math.sin(angle)*r) + 'px';
+                document.body.appendChild(p);
+                setTimeout(() => p.style.opacity = '0', 120 + Math.random()*50);
+                setTimeout(() => p.remove(), 220);
+            }
+        });
     </script>
 </body>
 </html>
