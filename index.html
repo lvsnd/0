@@ -87,25 +87,6 @@
             gap: 12px;
             margin-top: 12px;
         }
-        .view-counter {
-            color: #fff;
-            font-size: 1em;
-            font-weight: 700;
-            background: rgba(0,0,0,0.38);
-            padding: 6px 15px;
-            border-radius: 7px;
-            box-shadow: 0 1px 8px #0003;
-            user-select: none;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-        .people-icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            vertical-align: middle;
-        }
         .vol-control {
             display: flex;
             flex-direction: column;
@@ -173,21 +154,11 @@
         <h2>Less</h2>
         <div class="socials-label">Socials</div>
         <div class="socials-list">
-            <a class="social-link" href="https://discord.com/users/@759872782938275850" target="_blank">Discord</a>
+            <a class="social-link" href="https://discord.com/users/759872782938275850" target="_blank">Discord</a>
             <a class="social-link" href="https://www.roblox.com/users/7574203353/profile" target="_blank">Roblox</a>
             <a class="social-link" href="https://www.tiktok.com/@culaf" target="_blank">TikTok</a>
         </div>
         <div class="bottom-row">
-            <div class="view-counter" id="viewcounter">
-                <span class="people-icon">
-                    <svg viewBox="0 0 24 24" fill="white" width="20" height="20">
-                        <path d="M16.5,11.5c1.66,0,3-1.34,3-3s-1.34-3-3-3s-3,1.34-3,3S14.84,11.5,16.5,11.5z M7.5,11.5c1.66,0,3-1.34,3-3
-                            s-1.34-3-3-3s-3,1.34-3,3S5.84,11.5,7.5,11.5z M7.5,13c-2.33,0-7,1.17-7,3.5V19h14v-2.5C14.5,14.17,9.83,13,7.5,13z
-                            M16.5,13c-0.29,0-0.62,0.02-1,0.05c1.16,0.84,1.98,1.97,2,3.45V19h7v-2.5C24.5,14.17,19.83,13,17.5,13z"/>
-                    </svg>
-                </span>
-                <span id="viewcountnum">--</span>
-            </div>
             <div class="vol-control">
                 <label class="vol-label" for="volslider">Volume</label>
                 <input type="range" id="volslider" min="0" max="0.3" step="0.01" value="0.3">
@@ -210,7 +181,6 @@
         overlay.style.pointerEvents = "all";
         var particlesActive = false;
         var lastX = null, lastY = null;
-
         overlay.onclick = function() {
             overlay.style.opacity = "0";
             overlay.style.pointerEvents = "none";
@@ -244,16 +214,6 @@
                 setTimeout(() => p.remove(), 180);
             }
         });
-
-        // Simple local view counter (per-device)
-        (function(){
-            var el = document.getElementById("viewcountnum");
-            var key = "site_viewcount_v1";
-            var count = parseInt(localStorage.getItem(key)||"0");
-            count++;
-            localStorage.setItem(key, count);
-            el.textContent = count;
-        })();
     </script>
 </body>
 </html>
