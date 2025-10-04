@@ -6,23 +6,24 @@
     <style>
         html, body { height: 100%; }
         body {
-            margin: 0; padding: 0; overflow: hidden;
-            font-family: Arial, sans-serif; color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            cursor: url('https://cdn.discordapp.com/attachments/1233881524550635650/1408727094510358621/unnamed.png'), auto;
         }
         .moving-bg {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background: url('https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybXp0b2hpeDViZHJuMHBkbHQ5OTRuaGFpd2E0bjhoY2pma2Y2MmYybCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UC8DbMqXvkpd6/giphy.gif') repeat;
-            background-size: cover; z-index: -2;
-            transition: filter 0.5s;
+            background: url('https://cdn.discordapp.com/attachments/1233881531404124202/1422212927682908252/7ef50d5cba53a3705a6a0085b9fc6572.gif') repeat;
+            background-size: cover; z-index: -2; transition: filter 0.5s;
         }
         .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
         .overlay {
             position: fixed; z-index: 2; top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(20,20,20,0.6);
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.5s;
+            width: 100vw; height: 100vh; background: rgba(20,20,20,0.6);
+            display: flex; align-items: center; justify-content: center; transition: opacity 0.5s;
         }
         .overlay-text {
             font-size: 2.4em; font-weight: bold;
@@ -40,34 +41,43 @@
         .container.visible { opacity: 1; }
         h2 {
             color: #fff;
-            font-size: 2.3em;
-            margin-bottom: 34px;
+            font-size: 2.2em;
+            margin-bottom: 30px;
             font-weight: bold;
         }
         .socials-label {
             color: #fff;
-            font-size: 1.55em;
-            margin-bottom: 30px;
+            font-size: 1.5em;
+            margin-bottom: 26px;
             font-weight: 700;
+            letter-spacing: 0.01em;
         }
         .socials-list {
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            gap: 38px;
+            gap: 36px;
+            margin-top: 0;
             margin-bottom: 34px;
         }
         .social-link {
-            font-size: 1.17em;
+            font-size: 1.15em;
             font-weight: 500;
             text-decoration: none;
             color: #cccccc;
             letter-spacing: 0.02em;
+            padding: 8px 0;
             transition: color 0.16s;
             white-space: nowrap;
         }
         .social-link:hover { color: #fff; }
+        @media (max-width: 520px) {
+            .container { width: 98vw; }
+            .socials-list { gap: 14px; font-size: 0.98em; flex-direction: column;}
+            h2 { font-size: 1.4em; }
+            .socials-label { font-size: 1.09em; }
+        }
         audio { margin-top: 8px; width: 80%; }
         .vol-control {
             margin-top: 18px;
@@ -111,16 +121,8 @@
             border: 2px solid #444; box-shadow: 0 2px 7px #0004, 0 0 0 2px #fff;
         }
         #volslider:focus { outline: none; }
-        .help {
-            color: #cccccc; margin-top: 14px;
-            font-size: 0.93em; letter-spacing: 0.01em;
-        }
-        @media (max-width: 520px) {
-            .container { width: 98vw; }
-            .socials-list { gap: 14px; font-size: 0.98em; flex-direction: column;}
-            h2 { font-size: 1.4em; }
-            .socials-label { font-size: 1.09em; }
-        }
+        #volslider::-ms-fill-lower { background: #ededed; }
+        #volslider::-ms-fill-upper { background: #cccccc; }
     </style>
 </head>
 <body>
@@ -144,7 +146,6 @@
             <label class="vol-label" for="volslider">Volume</label>
             <input type="range" id="volslider" min="0" max="0.3" step="0.01" value="0.3">
         </div>
-        <div class="help">Use the slider to adjust music. If sound doesn't start, interact with the page or slider.</div>
     </div>
     <script>
         var overlay = document.getElementById('overlay');
