@@ -1,201 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Less | Social Links</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif;}
-    body { background: #111; }
-    .moving-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; transition: filter 0.5s;}
-    .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
-    .overlay { position: fixed; z-index: 2; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s;}
-    .overlay-text { font-size: 2em; font-weight: bold; color: #fff; letter-spacing: 0.04em; text-shadow: 0 0 16px #000, 0 0 64px #fff7, 0 0 12px #000; cursor: pointer; user-select: none;}
-    .center-wrap { min-height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;}
-    .container, .discord-embed {
-        background: rgba(0,0,0,0.59);
-        border-radius: 24px;
-        box-shadow: 0 2px 24px #0006;
-        backdrop-filter: blur(18px) saturate(180%);
-        -webkit-backdrop-filter: blur(18px) saturate(180%);
-        color: #fff;
-    }
-    .container {
-        position: relative; z-index: 1;
-        width: 500px; max-width:97vw; min-width:260px;
-        padding: 44px 40px 38px 40px;
-        display: flex; flex-direction: column; align-items: center;
-        opacity: 0; transition: opacity 0.6s, transform 0.3s cubic-bezier(.03,.98,.52,.99);
-        text-align: center;
-        margin:0;
-    }
-    .container.visible { opacity: 1;}
-    h2 { width: 100%; text-align: center; color: #fff; font-size: 2.2em; margin-top: 0; margin-bottom: 38px; font-weight: bold; position: relative; z-index: 2;}
-    .discord-embed {
-        display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
-        padding: 18px 22px 16px 22px;
-        margin-bottom: 28px;
-        width: 100%; max-width: 420px;
-        min-height: 79px;
-    }
-    .profile-stack {
-        position: relative; display: flex; align-items: center; margin-right: 18px;
-    }
-    .embed-avatar {
-        width: 55px; height: 55px; border-radius: 50%; box-shadow: 0 2px 8px #0005; border:2px solid #222d; background: #232323;
-    }
-    .status-indicator {
-        position: absolute; right: -6px; bottom: -2px;
-        width: 19px; height: 19px; border-radius: 50%; border: 3px solid #111b; box-sizing: content-box; box-shadow: 0 0 10px #0008; transition: background 0.2s;
-    }
-    .status-online { background: #43b581;}
-    .status-idle { background: #faa61a;}
-    .status-dnd { background: #fa4747;}
-    .status-offline { background: #747f8d;}
-    .embed-activity { flex:1; display:flex; flex-direction:row; align-items:center; gap:11px;}
-    .embed-activity-text { flex:1; text-align:left; min-width:0;}
-    .activity-name { font-size: 1.09em; color: #fff; font-weight:600;}
-    .activity-details { color:#cccccc; font-size:0.96em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-    .activity-state { color: #adadad; font-size:0.93em;}
-    .activity-large-img, .activity-small-img { background:#181a1c; box-shadow: 0 1.5px 6px #0006;}
-    .activity-large-img { width: 52px; height: 52px; border-radius: 11px;}
-    .activity-small-img { width:30px; height:30px; border-radius:8px; margin-left:8px;}
-    img:not([src]) { opacity: 0;}
-    @media (max-width:670px){
-        .container, .discord-embed{width:98vw;min-width:0;padding:18px 2vw 14px 2vw;}
-        h2{font-size:1.12em;margin-bottom:14px;}
-        .discord-embed{padding:10px 8px 10px 8px;max-width:99vw;margin-bottom:16px;}
-        .embed-avatar{width:32px;height:32px;}
-        .status-indicator{width:12px;height:12px;}
-        .activity-large-img{width:18px;height:18px;}
-        .activity-small-img{width:14px;height:14px;}
-        .profile-stack {margin-right:8px;}
-    }
-    .socials-list { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 45px; margin-bottom: 34px; margin-top:16px;}
-    .social-link { text-decoration: none; color: #ccc; padding: 8px 0; transition: color 0.16s; white-space: nowrap; display: flex; align-items: center;}
-    .social-link:hover { color: #fff;}
-    .icon-img { height:46px;width:46px;object-fit:contain;display:flex;align-items:center;justify-content:center;}
-    .bottom-row { display:flex; flex-direction:row; align-items:center; justify-content:center; gap:13px; margin-top:15px;}
-    .vol-control { display:flex; flex-direction:column; align-items:center; gap:3px; }
-    .vol-label { font-size:1em; color:#fff; font-weight:700; margin-bottom:1px; letter-spacing: 0.03em; text-align: center;}
-    #volslider { appearance: none; width: 140px; height: 12px; background: linear-gradient(90deg, #ededed 0%, #333 100%); outline: none; border-radius: 6px; border: 1px solid #444; box-shadow: 0 1px 4px #0003;}
-    #volslider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: #181818; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 7px #0004, 0 0 0 2px #fff1; border: 2px solid #333; transition: background 0.2s;}
-    #volslider:active::-webkit-slider-thumb { background: #292929;}
-    #volslider::-moz-range-thumb { width: 22px; height: 22px; background: #181818; border-radius: 50%; cursor: pointer; border: 2px solid #333; box-shadow: 0 2px 7px #0004, 0 0 0 2px #fff1;}
-    #volslider:focus { outline:none;}
-    #volslider::-ms-fill-lower { background:#ededed;}
-    #volslider::-ms-fill-upper { background:#333;}
-    .particle { position: fixed; pointer-events:none; width: 4px; height: 4px; background: #fff; border-radius: 50%; opacity: 0.8; z-index: 9999; box-shadow: 0 0 6px #fff, 0 0 16px #fff3; transition: opacity 0.13s; will-change: left, top, opacity;}
-    .bgvid { position:fixed; left:0; top:0; width:100vw; height:100vh; object-fit:cover; z-index:-2; pointer-events:none;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Less | Social Links</title>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif;}
+        body { background: #111; }
+        .moving-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; transition: filter 0.5s;}
+        .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
+        .overlay { position: fixed; z-index: 2; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s;}
+        .overlay-text { font-size: 2em; font-weight: bold; color: #fff; letter-spacing: 0.04em; text-shadow: 0 0 16px #000, 0 0 64px #fff7, 0 0 12px #000; cursor: pointer; user-select: none;}
+        .center-wrap { min-height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;}
+        .container, .discord-embed {
+            background: rgba(0,0,0,0.59);
+            border-radius: 24px;
+            box-shadow: 0 2px 24px #0006;
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
+            color: #fff;
+        }
+        .container {
+            position: relative; z-index: 1;
+            width: 500px; max-width:97vw; min-width:260px;
+            padding: 44px 40px 38px 40px;
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; transition: opacity 0.6s, transform 0.3s cubic-bezier(.03,.98,.52,.99);
+            text-align: center;
+            margin:0;
+        }
+        .container.visible { opacity: 1;}
+        h2 { width: 100%; text-align: center; color: #fff; font-size: 2.2em; margin-top: 0; margin-bottom: 38px; font-weight: bold; position: relative; z-index: 2;}
+        .discord-embed {
+            display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
+            padding: 18px 22px 16px 22px;
+            margin-bottom: 28px;
+            width: 100%; max-width: 420px;
+            min-height: 79px;
+        }
+        .profile-stack {
+            position: relative; display: flex; align-items: center; margin-right: 18px;
+        }
+        .embed-avatar {
+            width: 55px; height: 55px; border-radius: 50%; box-shadow: 0 2px 8px #0005; border:2px solid #222d; background: #232323;
+        }
+        .status-indicator {
+            position: absolute; right: -6px; bottom: -2px;
+            width: 19px; height: 19px; border-radius: 50%; border: 3px solid #111b; box-sizing: content-box; box-shadow: 0 0 10px #0008; transition: background 0.2s;
+        }
+        .status-online { background: #43b581;}
+        .status-idle { background: #faa61a;}
+        .status-dnd { background: #fa4747;}
+        .status-offline { background: #747f8d;}
+        .embed-activity { flex:1; display:flex; flex-direction:row; align-items:center; gap:11px;}
+        .embed-activity-text { flex:1; text-align:left; min-width:0;}
+        .activity-name { font-size: 1.09em; color: #fff; font-weight:600;}
+        .activity-details { color:#cccccc; font-size:0.96em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+        .activity-state { color: #adadad; font-size:0.93em;}
+        .activity-large-img, .activity-small-img { background:#181a1c; box-shadow: 0 1.5px 6px #0006;}
+        .activity-large-img { width: 52px; height: 52px; border-radius: 11px;}
+        .activity-small-img { width:30px; height:30px; border-radius:8px; margin-left:8px;}
+        .social-icon { display: flex; align-items: center; justify-content: center; padding: 14px 18px; margin: 8px 0; background: rgba(0,0,0,0.32); border-radius: 12px; text-decoration: none; color: #fff; font-size: 1.08em; font-weight: 600; transition: all 0.25s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.3); width: 100%; max-width: 420px; box-sizing: border-box;}
+        .social-icon:hover { background: rgba(0,0,0,0.58); transform: scale(1.02); box-shadow: 0 4px 20px rgba(0,0,0,0.5);}
+        .icon-img { width: 40px; height: 40px; margin-right: 16px; border-radius: 8px; object-fit: cover;}
+        .particle { position: fixed; width:7px; height:7px; border-radius: 50%; background: #ffffff77; pointer-events:none; z-index:999; opacity:0.7; transition: opacity 0.15s, transform 0.15s; transform: scale(1);}
+    </style>
 </head>
 <body>
-<video class="bgvid moving-bg blurred" id="bgvid" autoplay muted loop playsinline>
-    <source src="https://files.catbox.moe/8a15sh.mp4" type="video/mp4">
-</video>
-<div class="overlay" id="overlay">
-    <div class="overlay-text">click to enter...</div>
-</div>
-<div class="center-wrap">
-  <div class="container" id="maincontent">
-    <h2>Less</h2>
-    <div id="discord-embed" class="discord-embed" style="display:none;">
-        <div class="profile-stack">
-            <img class="embed-avatar" id="embed-avatar" src="" alt="Avatar"/>
-            <span id="embed-status" class="status-indicator"></span>
-        </div>
-        <div class="embed-activity" id="embed-activity" style="display:none;">
-            <img id="activity-large-img" class="activity-large-img" src="" alt=""/>
-            <div class="embed-activity-text">
-                <div id="activity-name" class="activity-name"></div>
-                <div id="activity-details" class="activity-details"></div>
-                <div id="activity-state" class="activity-state"></div>
-            </div>
-            <img id="activity-small-img" class="activity-small-img" src="" alt=""/>
-        </div>
-    </div>
-    <div class="socials-list">
-        <a class="social-link" href="https://discord.com/users/759872782938275850" target="_blank" title="Discord">
-            <img class="icon-img" src="https://media.discordapp.net/attachments/1255692212717752513/1423975413008564306/W_discord.png?ex=68e39572&is=68e243f2&hm=4c76f180e73490badd8a96a13dd6cb749550a27806977ddc904509570301a9ee&=&format=webp&quality=lossless" alt="Discord">
-        </a>
-        <a class="social-link" href="https://www.roblox.com/users/7574203353/profile" target="_blank" title="Roblox">
-            <img class="icon-img" src="https://cdn.discordapp.com/attachments/1255692212717752513/1423975413637451877/W_roblox.png?ex=68e39572&is=68e243f2&hm=1df110a646542a7e794a8195c6a7bc97df90a0273658913b2fdc9dbf2cc6c06c&" alt="Roblox">
-        </a>
-        <a class="social-link" href="https://www.tiktok.com/@culaf" target="_blank" title="TikTok">
-            <img class="icon-img" src="https://media.discordapp.net/attachments/1255692212717752513/1423975411368329257/W_tiktok.png?ex=68e39572&is=68e243f2&hm=6759294687d0daa6dd8c229a2e0ad391e02cc8a8ec19c4b47ac1791f33558c56&=&format=webp&quality=lossless" alt="TikTok">
-        </a>
-    </div>
-    <div class="bottom-row">
-        <div class="vol-control">
-            <label class="vol-label" for="volslider">Volume</label>
-            <input type="range" id="volslider" min="0" max="0.3" step="0.01" value="0.3">
-        </div>
-    </div>
-    <audio id="bgmusic" loop>
-        <source src="https://files.catbox.moe/oxutl8.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-  </div>
-</div>
+<div class="overlay" id="overlay"><div class="overlay-text" id="overlay-text">CLICK TO ENTER</div></div>
+<video class="moving-bg" id="moving-bg" autoplay loop muted playsinline><source src="https://cdn.discordapp.com/attachments/1267926877226487808/1337506662654849074/V0009.mp4?ex=67992e1c&is=6797dc9c&hm=1a0c8e4fdf5e8b83f55ebfdb4f93f6fa3c8e2f63e2e7e04c4e56d48a66c8e8bb&" type="video/mp4"></video>
+<div class="center-wrap"><div class="container" id="container"><h2>Less</h2>
+<div id="discord-embed" class="discord-embed" style="display:none;"><div class="profile-stack"><img class="embed-avatar" id="embed-avatar" src="" alt="Avatar"><div id="status-indicator" class="status-indicator"></div></div><div class="embed-activity" id="embed-activity" style="display:none;"><img class="activity-large-img" id="activity-large-img" src="" alt="Large"><div class="embed-activity-text"><div class="activity-name" id="activity-name"></div><div class="activity-details" id="activity-details"></div><div class="activity-state" id="activity-state"></div></div><img class="activity-small-img" id="activity-small-img" src="" alt="Small"></div></div>
+<a class="social-icon" href="#"><img class="icon-img" src="https://files.catbox.moe/x3yxbr.png">Discord</a>
+<a class="social-icon" href="#"><img class="icon-img" src="https://files.catbox.moe/3fwizg.png">Roblox</a>
+<a class="social-icon" href="#"><img class="icon-img" src="https://files.catbox.moe/vh7ew4.png">TikTok</a>
+</div></div>
 <script>
-var overlay = document.getElementById('overlay');
-var bg = document.getElementById('bgvid');
-var main = document.getElementById('maincontent');
-var audio = document.getElementById('bgmusic');
-var slider = document.getElementById('volslider');
-main.classList.remove('visible');
-bg.classList.add('blurred');
-overlay.style.opacity = "1";
-overlay.style.pointerEvents = "all";
-var particlesActive = false;
-var lastX = null, lastY = null;
-overlay.onclick = function() {
-    overlay.style.opacity = "0";
-    overlay.style.pointerEvents = "none";
-    setTimeout(function(){
-        overlay.style.display = "none";
-        bg.classList.remove('blurred');
-        main.classList.add('visible');
-        particlesActive = true;
-        startDiscordEmbed();
-    }, 450);
-    audio.volume = 0.3;
-    audio.play();
-};
-slider.value = 0.3;
-slider.addEventListener('input', function() { audio.volume = slider.value; });
-const maxRotate = 7;
-document.addEventListener('mousemove', function(e) {
-    if (!main.classList.contains('visible')) return;
-    const rect = main.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    const xPercent = dx / (rect.width / 2);
-    const yPercent = dy / (rect.height / 2);
-    const xDeg = Math.max(Math.min(yPercent * maxRotate, maxRotate), -maxRotate);
-    const yDeg = Math.max(Math.min(-xPercent * maxRotate, maxRotate), -maxRotate);
-    main.style.transform = `rotateX(${xDeg}deg) rotateY(${yDeg}deg)`;
+let particlesActive=false, lastX=null, lastY=null;
+const overlay=document.getElementById('overlay'), overlayText=document.getElementById('overlay-text'), container=document.getElementById('container'), movingBg=document.getElementById('moving-bg');
+overlayText.addEventListener('click', ()=>{
+    overlay.style.opacity='0';
+    setTimeout(()=>{
+        overlay.style.display='none';
+        movingBg.classList.add('blurred');
+        container.classList.add('visible');
+        particlesActive=true;
+    }, 500);
 });
-document.addEventListener('mouseleave', function () {
-    main.style.transform = `rotateX(0deg) rotateY(0deg)`;
-});
-function startDiscordEmbed() {
-    fetchDiscordEmbed();
-    setInterval(fetchDiscordEmbed, 15000);
-}
-async function fetchDiscordEmbed() {
+fetchDiscord();
+setInterval(fetchDiscord, 5000);
+async function fetchDiscord(){
+    const embedActivity = document.getElementById('embed-activity');
+    const embed = document.getElementById('discord-embed');
+    const statusElem = document.getElementById('status-indicator');
+    const avatarElem = document.getElementById('embed-avatar');
     try {
-        const res = await fetch('https://api.lanyard.rest/v1/users/759872782938275850');
-        const obj = await res.json();
-        const embed = document.getElementById('discord-embed');
-        const embedActivity = document.getElementById('embed-activity');
-        const statusElem = document.getElementById('embed-status');
-        if (!obj.success) return hideEmbed();
-        const data = obj.data;
-        document.getElementById('embed-avatar').src =
-            `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=128`;
+        let res = await fetch('https://api.lanyard.rest/v1/users/1147595055966711908');
+        let json = await res.json();
+        if(!json.success){hideEmbed();return;}
+        let data = json.data;
+        avatarElem.src = `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.png?size=128`;
         let st = data.discord_status || "offline";
         statusElem.className = "status-indicator " +
           (st === "online" ? "status-online" :
