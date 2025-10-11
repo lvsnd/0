@@ -7,7 +7,8 @@
     <style>
         html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: Arial, sans-serif;}
         body { background: #111; }
-        .moving-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; transition: filter 0.5s;}
+        .moving-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; transition: filter 0.5s; display: none;}
+        .moving-bg.visible { display: block;}
         .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
         .overlay { position: fixed; z-index: 2; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s;}
         .overlay-text { font-size: 2em; font-weight: bold; color: #fff; letter-spacing: 0.04em; text-shadow: 0 0 16px #000, 0 0 64px #fff7, 0 0 12px #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, -3px 0 0 #000, 3px 0 0 #000, 0 -3px 0 #000, 0 3px 0 #000; cursor: pointer; user-select: none;}
@@ -39,7 +40,7 @@
     </style>
 </head>
 <body>
-    <video class="moving-bg" id="bgVideo" autoplay loop muted>
+    <video class="moving-bg" id="bgVideo" loop>
         <source src="https://files.catbox.moe/fnwoxj.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -77,9 +78,10 @@
             setTimeout(() => {
                 overlay.style.display = 'none';
                 container.classList.add('visible');
+                movingBg.classList.add('visible');
                 movingBg.classList.add('blurred');
-                bgVideo.muted = false;
                 bgVideo.volume = volumeSlider.value / 100;
+                bgVideo.play();
             }, 500);
         });
         
