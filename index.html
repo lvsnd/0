@@ -33,9 +33,9 @@
         .link-button:hover { background: #fff3; transform: scale(1.02);}
         .link-button:last-child { margin-bottom: 0;}
         .link-button img { width: 24px; height: 24px; margin-right: 12px; flex-shrink: 0;}
-        .volume-slider { width: 100%; margin-top: 16px; cursor: pointer; -webkit-appearance: none; appearance: none; height: 6px; background: #808080; border-radius: 3px; outline: none;}
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer;}
-        .volume-slider::-moz-range-thumb { width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: none;}
+        .volume-slider { width: 100px; margin-top: 16px; cursor: pointer; -webkit-appearance: none; appearance: none; height: 6px; background: #808080; border-radius: 3px; outline: none; transition: all 0.3s ease;}
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; transition: all 0.2s ease;}
+        .volume-slider::-moz-range-thumb { width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: none; transition: all 0.2s ease;}
     </style>
 </head>
 <body>
@@ -50,18 +50,18 @@
         <div class="container" id="container">
             <h2>Less</h2>
             <a class="link-button" href="https://discord.com/users/759872782938275850" target="_blank">
-                <img src="https://files.catbox.moe/x3yxbr.png" alt="Discord">
+                <img src="https://cdn.simpleicons.org/discord/5865F2" alt="Discord">
                 Discord
             </a>
             <a class="link-button" href="https://www.tiktok.com/@culaf" target="_blank">
-                <img src="https://files.catbox.moe/vh7ew4.png" alt="TikTok">
+                <img src="https://cdn.simpleicons.org/tiktok/000000" alt="TikTok">
                 TikTok
             </a>
             <a class="link-button" href="https://www.roblox.com/users/7574203353/profile" target="_blank">
-                <img src="https://files.catbox.moe/3fwizg.png" alt="Roblox">
+                <img src="https://cdn.simpleicons.org/roblox/000000" alt="Roblox">
                 Roblox
             </a>
-            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="50">
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
         </div>
     </div>
     <script>
