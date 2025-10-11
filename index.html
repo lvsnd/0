@@ -49,14 +49,14 @@
         .link-button:hover { background: #fff3; transform: scale(1.02);}
         .link-button:last-child { margin-bottom: 0;}
         .link-button img { width: 24px; height: 24px; margin-right: 12px; flex-shrink: 0;}
-        .volume-slider { width: 100%; margin-top: 16px; cursor: pointer; }
+        .volume-slider { width: 100%; margin-top: 16px; cursor: pointer; -webkit-appearance: none; appearance: none; height: 6px; background: #808080; border-radius: 3px; outline: none;}
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer;}
+        .volume-slider::-moz-range-thumb { width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: none;}
     </style>
 </head>
 <body>
-    <!-- Background Video Element -->
-    <!-- Replace https://www.w3schools.com/html/mov_bbb.mp4 with your own video URL -->
-    <video class="moving-bg" id="bgVideo" autoplay loop muted>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    <video class="moving-bg" id="bgVideo" autoplay loop>
+        <source src="https://files.catbox.moe/fnwoxj.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <div class="overlay" id="overlay">
