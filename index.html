@@ -10,8 +10,9 @@
         .moving-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; transition: filter 0.5s; display: none;}
         .moving-bg.visible { display: block;}
         .moving-bg.blurred { filter: blur(7px) brightness(0.7);}
-        .overlay { position: fixed; z-index: 2; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s;}
-        .overlay-text { font-size: 2em; font-weight: bold; color: #fff; letter-spacing: 0.04em; text-shadow: 0 0 16px #000, 0 0 64px #fff7, 0 0 12px #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, -3px 0 0 #000, 3px 0 0 #000, 0 -3px 0 #000, 0 3px 0 #000; cursor: pointer; user-select: none;}
+        .overlay { position: fixed; z-index: 2; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: all;}
+        .overlay.hidden { background: transparent; pointer-events: none;}
+        .overlay-text { font-size: 2em; font-weight: bold; color: #fff; letter-spacing: 0.04em; text-shadow: 0 0 16px #000, 0 0 64px #fff7, 0 0 12px #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, -3px 0 0 #000, 3px 0 0 #000, 0 -3px 0 #000, 0 3px 0 #000; user-select: none; pointer-events: none;}
         .center-wrap { min-height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;}
         .container {
             background: rgba(0,0,0,0.59);
@@ -51,15 +52,18 @@
         <div class="container" id="container">
             <h2>Less</h2>
             <a class="link-button" href="https://discord.com/users/759872782938275850" target="_blank">
-                <img src="https://files.catbox.moe/x3yxbr.png" alt="Discord">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord">
+                Discord
             </a>
             <a class="link-button" href="https://www.tiktok.com/@culaf" target="_blank">
-                <img src="https://files.catbox.moe/vh7ew4.png" alt="TikTok">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok">
+                TikTok
             </a>
             <a class="link-button" href="https://www.roblox.com/users/7574203353/profile" target="_blank">
-                <img src="https://files.catbox.moe/3fwizg.png" alt="Roblox">
+                <img src="https://cdn-icons-png.flaticon.com/512/5968/5968827.png" alt="Roblox">
+                Roblox
             </a>
-            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="50">
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider">
         </div>
     </div>
     <script>
@@ -70,16 +74,13 @@
         const bgVideo = document.getElementById('bgVideo');
         const volumeSlider = document.getElementById('volumeSlider');
         
-        overlayText.addEventListener('click', () => {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                container.classList.add('visible');
-                movingBg.classList.add('visible');
-                movingBg.classList.add('blurred');
-                bgVideo.volume = volumeSlider.value / 100;
-                bgVideo.play();
-            }, 500);
+        overlay.addEventListener('click', () => {
+            overlay.classList.add('hidden');
+            container.classList.add('visible');
+            movingBg.classList.add('visible');
+            movingBg.classList.add('blurred');
+            bgVideo.volume = volumeSlider.value / 100;
+            bgVideo.play();
         });
         
         volumeSlider.addEventListener('input', (e) => {
